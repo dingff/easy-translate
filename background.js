@@ -21,12 +21,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 chrome.storage.sync.get('isOpen', (res) => {
-  const isOpen = res.isOpen
-  chrome.action.setIcon({ path: isOpen ? './logo/logo.png': './logo/logo_gray.png' })
-  if (isOpen == undefined) {
-    // 初始安装
+  if (res.isOpen == undefined) {
+    // 安装扩展时初始化启用状态
     chrome.storage.sync.set({ isOpen: true }, () => {});
   }
+})
+chrome.windows.onCreated.addListener(() => {
+  // 在浏览器启动时更新图标
+  chrome.storage.sync.get('isOpen', (res) => {
+    chrome.action.setIcon({ path: res.isOpen ? './logo/logo.png': './logo/logo_gray.png' })
+  })
 })
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.isOpen) {

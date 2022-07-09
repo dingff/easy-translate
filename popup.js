@@ -69,8 +69,7 @@ chrome.storage.sync.get('user', (res) => {
   }
 })
 chrome.storage.sync.get('isOpen', (res) => {
-  const isOpen = res.isOpen
-  if (isOpen) {
+  if (res.isOpen) {
     toggleOpen.classList.add('open')
   } else {
     toggleOpen.classList.remove('open')
