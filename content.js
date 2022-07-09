@@ -17,7 +17,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 });
 const getNodes = (root) => {
   const nodes = []
-  const excludeNodes = ['SCRIPT', 'NOSCRIPT', 'path', 'IMG', 'svg', 'I', 'STYLE', 'CODE'];
+  const excludeNodes = ['SCRIPT', 'NOSCRIPT', 'path', 'IMG', 'svg', 'I', 'STYLE', 'CODE', 'S'];
   const doNext = (next) => {
     for (let i = 0; i < next.children.length; i++) {
       var node = next.children[i];
@@ -36,9 +36,9 @@ const replaceHtml = (root) => {
     item.childNodes.forEach((subItem) => {
       const textContent = subItem.textContent;
       if (subItem.nodeType === 3 && textContent.trim() !== '') {
-        const newNode = document.createElement('i')
+        const newNode = document.createElement('s')
         newNode.style.all = 'unset';
-        const html = textContent.replace(/[a-zA-Z]+/g, (m) => `<i class="easy-translate" style="all: unset;">${m}</i>`)
+        const html = textContent.replace(/[a-zA-Z]+/g, (m) => `<s class="easy-translate" style="all: unset;">${m}</s>`)
         newNode.innerHTML = html
         item.insertBefore(newNode, subItem)
         item.removeChild(subItem)
@@ -50,10 +50,10 @@ const updateTrans = (target, translation) => {
   line = document.getElementById('et-line');
   content = document.getElementById('et-content');
   if (!line) {
-    line = document.createElement('i');
+    line = document.createElement('s');
     line.id = 'et-line';
     document.body.appendChild(line)
-    content = document.createElement('i')
+    content = document.createElement('s')
     content.id = 'et-content';
     document.body.appendChild(content)
   }
@@ -146,7 +146,7 @@ document.body.addEventListener('mouseup', () => {
   getTranslation(q).then((v) => {
     content = document.getElementById('et-content');
     if (!content) {
-      content = document.createElement('i')
+      content = document.createElement('s')
       content.id = 'et-content';
       document.body.appendChild(content)
     }
