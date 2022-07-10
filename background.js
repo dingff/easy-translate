@@ -20,11 +20,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   return true;
 });
-chrome.storage.sync.get('isOpen', (res) => {
-  if (res.isOpen == undefined) {
-    // 安装扩展时初始化启用状态
-    chrome.storage.sync.set({ isOpen: true }, () => {});
-  }
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.get('isOpen', (res) => {
+    if (res.isOpen == undefined) {
+      // 安装扩展时初始化启用状态
+      chrome.storage.sync.set({ isOpen: true }, () => {});
+    }
+  })
 })
 chrome.windows.onCreated.addListener(() => {
   // 在浏览器启动时更新图标
