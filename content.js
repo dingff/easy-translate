@@ -46,22 +46,22 @@ const replaceHtml = (root) => {
     })
   })
 }
-const updateTrans = (target, translation) => {
-  line = document.getElementById('et-line');
-  content = document.getElementById('et-content');
-  if (!line) {
-    line = document.createElement('s');
-    line.id = 'et-line';
-    document.body.appendChild(line)
-    content = document.createElement('s')
-    content.id = 'et-content';
-    document.body.appendChild(content)
-  }
-  content.innerText = translation;
+const createTrans = () => {
+  line = document.createElement('s');
+  line.id = 'et-line';
+  document.body.appendChild(line)
+  content = document.createElement('s')
+  content.id = 'et-content';
+  document.body.appendChild(content)
+}
+const updateTrans = ({ target, translation, type }) => {
+  if (!content) createTrans();
   const bcr = target.getBoundingClientRect();
-  line.style.cssText = `display: block; top: ${bcr.bottom}px; left: ${bcr.left}px; width: ${target.offsetWidth}px;`;
+  if (type === 'hover') line.style.cssText = `display: block; top: ${bcr.bottom}px; left: ${bcr.left}px; width: ${target.offsetWidth}px;`;
+  content.innerText = translation;
   content.style.cssText = `display: block; left: ${bcr.left}px;`;
-  content.style.top = `${bcr.top - content.offsetHeight - 4}px`;
+  const dis = type === 'hover' ? 4 : 12
+  content.style.top = `${bcr.top - content.offsetHeight - dis}px`;
   transVisible = true
 }
 const initParams = (q) => {
@@ -124,7 +124,7 @@ document.body.addEventListener('mouseover', debounce((e) => {
     }
     target.addEventListener('mouseout', hideFn)
     getTranslation(target.innerText).then((v) => {
-      if (isHovering) updateTrans(target, v)
+      if (isHovering) updateTrans({ target, translation: v, type: 'hover' })
     })
   }
 }, 100))
@@ -142,18 +142,8 @@ document.body.addEventListener('mouseup', () => {
   const selection = getSelection();
   const q = selection.toString();
   if (!q) return;
-  const bcr = selection.getRangeAt(0).getBoundingClientRect();
   getTranslation(q).then((v) => {
-    content = document.getElementById('et-content');
-    if (!content) {
-      content = document.createElement('s')
-      content.id = 'et-content';
-      document.body.appendChild(content)
-    }
-    content.innerText = v;
-    content.style.cssText = `display: block; left: ${bcr.left}px;`;
-    content.style.top = `${bcr.top - content.offsetHeight - 10}px`;
-    transVisible = true
+    updateTrans({ target: selection.getRangeAt(0), translation: v })
   })
 })
 window.addEventListener('scroll', () => {
