@@ -20,9 +20,9 @@ secretKey.oninput = () => {
 }
 const endEdit = () => {
   appId.disabled = true
-  appId.style.background = '#ddd'
+  appId.style.background = '#eee'
   secretKey.disabled = true
-  secretKey.style.background = '#ddd'
+  secretKey.style.background = '#eee'
   submitBtn.style.display = 'none'
   emptyTip.style.display = 'none'
   editTip.style.display = 'block'
