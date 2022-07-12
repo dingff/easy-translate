@@ -11,7 +11,9 @@
   position: fixed;
   display: none;
   z-index: 999999999;
-  padding: 4px 8px;
+  padding: 4px 6px;
+  line-height: 1.5;
+  text-align: justify;
   border-radius: 4px;
   background: #000;
   color: #fff;
