@@ -56,12 +56,15 @@ const createTrans = () => {
 }
 const updateTrans = ({ target, translation, type }) => {
   if (!content) createTrans();
-  const bcr = target.getBoundingClientRect();
-  if (type === 'hover') line.style.cssText = `display: block; top: ${bcr.bottom}px; left: ${bcr.left}px; width: ${target.offsetWidth}px;`;
+  const targetRect = target.getBoundingClientRect();
+  if (type === 'hover') line.style.cssText = `display: block; top: ${targetRect.bottom}px; left: ${targetRect.left}px; width: ${target.offsetWidth}px;`;
   content.innerText = translation;
-  content.style.cssText = `display: block; left: ${bcr.left}px;`;
+  content.style.cssText = `display: block; left: ${targetRect.left}px;`;
   const dis = type === 'hover' ? 4 : 12
-  content.style.top = `${bcr.top - content.offsetHeight - dis}px`;
+  content.style.top = `${targetRect.top - content.offsetHeight - dis}px`;
+  if (content.getBoundingClientRect().top < 0) {
+    content.style.top = `${targetRect.bottom + 10}px`
+  }
   transVisible = true
 }
 const initParams = (q) => {
